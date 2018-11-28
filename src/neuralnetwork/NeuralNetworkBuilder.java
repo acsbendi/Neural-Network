@@ -3,7 +3,7 @@ package neuralnetwork;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NeuronBuilder {
+public class NeuralNetworkBuilder {
 
     private final int NEURON_COUNT = 81;
 
@@ -25,7 +25,7 @@ public class NeuronBuilder {
         }
     }
 
-    NeuralNetwork buildNeuralNetwork(){
+    public NeuralNetwork buildNeuralNetwork(){
         createNeurons();
         setConnections();
 

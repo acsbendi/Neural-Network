@@ -6,7 +6,7 @@ class InputParser {
 
     private final Scanner scanner = new Scanner(System.in);
 
-    List<Double> getChemicalRepresentation(){
+    List<Double> getNextChemicalRepresentation(){
         String line = scanner.nextLine();
         String[] splitLine = line.split("\t");
         List<Double> result = new ArrayList<>();
@@ -17,7 +17,7 @@ class InputParser {
         return result;
     }
 
-    double getTemperature(){
+    double getNextTemperature(){
         String line = scanner.nextLine();
         return Double.parseDouble(line);
     }
