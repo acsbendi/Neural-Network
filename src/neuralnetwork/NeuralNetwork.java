@@ -1,3 +1,5 @@
+package neuralnetwork;
+
 import java.util.List;
 
 class NeuralNetwork {

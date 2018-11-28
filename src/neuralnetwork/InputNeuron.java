@@ -1,3 +1,5 @@
+package neuralnetwork;
+
 class InputNeuron extends Neuron {
 
     private double currentValue;
