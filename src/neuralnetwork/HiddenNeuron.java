@@ -18,7 +18,7 @@ class HiddenNeuron extends OutputCalculatorNeuron<InputNeuron>{
         return inputNeuron.currentOutput;
     }
 
-    public void setOutputNeuron(OutputNeuron outputNeuron) {
+    void setOutputNeuron(OutputNeuron outputNeuron) {
         this.outputNeuron = outputNeuron;
     }
 }

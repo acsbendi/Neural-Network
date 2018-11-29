@@ -3,7 +3,7 @@ import neuralnetwork.NeuralNetwork;
 import java.util.List;
 
 @SuppressWarnings("SpellCheckingInspection")
-class TestEvaluater {
+class TestEvaluater extends InputEvaluater{
 
     private static final int TEST_SET_SIZE = 4252;
 
@@ -23,6 +23,7 @@ class TestEvaluater {
 
     private void evaluateTest(){
         List<Double> chemicalRepresentation = parser.getNextChemicalRepresentation();
+        normalizeChemicalRepresentation(chemicalRepresentation);
 
         neuralNetwork.setInputs(chemicalRepresentation);
 
