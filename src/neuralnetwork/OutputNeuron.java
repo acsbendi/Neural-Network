@@ -20,8 +20,8 @@ class OutputNeuron extends OutputCalculatorNeuron<HiddenNeuron> {
         return currentOutput;
     }
 
-    private double getErrorOutputGradient(double target){
-        return -(target - currentOutput);
+    private double getErrorOutputGradient(){
+        return -(lastTarget - currentOutput);
     }
 
     private double getNetWeightGradientFor(HiddenNeuron hiddenNeuron){
@@ -30,11 +30,11 @@ class OutputNeuron extends OutputCalculatorNeuron<HiddenNeuron> {
 
     @Override
     protected double getErrorWeightGradientFor(HiddenNeuron hiddenNeuron){
-        return getErrorOutputGradient(lastTarget) * getOutputNetGradient() * getNetWeightGradientFor(hiddenNeuron);
+        return getErrorOutputGradient() * getOutputNetGradient() * getNetWeightGradientFor(hiddenNeuron);
     }
 
     double getDelta(){
-        return getErrorOutputGradient(lastTarget) * getOutputNetGradient();
+        return getErrorOutputGradient() * getOutputNetGradient();
     }
 
     @Override

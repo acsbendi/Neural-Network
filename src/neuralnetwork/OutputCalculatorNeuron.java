@@ -5,10 +5,10 @@ import java.util.Map;
 
 abstract class OutputCalculatorNeuron<InputNeuronType extends Neuron> extends Neuron {
     private final Map<InputNeuronType, Double> inputConnections = new HashMap<>();
-    private double bias = randomGenerator.nextDouble();
+    private double bias = getRandomNumber();
 
     void addInputConnection(InputNeuronType inputNeuron){
-        inputConnections.put(inputNeuron, randomGenerator.nextDouble());
+        inputConnections.put(inputNeuron, getRandomNumber());
     }
 
     void calculateCurrentOutput(){

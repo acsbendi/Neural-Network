@@ -1,5 +1,6 @@
 import neuralnetwork.NeuralNetwork;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -10,6 +11,7 @@ class Trainer extends InputEvaluater {
     private final NeuralNetwork neuralNetworkToTrain;
     private final InputParser inputParser;
     private final Queue<List<Double>> chemicalRepresentations = new LinkedList<>();
+    private Queue<Double> temperatures = new LinkedList<>();
 
     Trainer(NeuralNetwork neuralNetworkToTrain, InputParser inputParser) {
         this.neuralNetworkToTrain = neuralNetworkToTrain;
@@ -19,6 +21,9 @@ class Trainer extends InputEvaluater {
     void train(){
         readChemicalRepresentations();
         normalizeChemicalRepresentations();
+
+        readTemperatures();
+        normalizeTemperatures();
 
         for (int i = 0; i < TRAINING_SET_SIZE; i++) {
             trainOnce();
@@ -31,6 +36,12 @@ class Trainer extends InputEvaluater {
         }
     }
 
+    private void readTemperatures(){
+        for (int i = 0; i < TRAINING_SET_SIZE; i++) {
+            readOneTemperature();
+        }
+    }
+
     private void normalizeChemicalRepresentations(){
         setMinimums();
         setMaximums();
@@ -39,13 +50,25 @@ class Trainer extends InputEvaluater {
             normalizeChemicalRepresentation(chemicalRepresentation);
     }
 
+    private void normalizeTemperatures(){
+        temperatureMinimum = temperatures.stream().min(Double::compareTo).orElse(0d);
+        temperatureMaximum = temperatures.stream().max(Double::compareTo).orElse(100d);
+
+        Queue<Double> normalizedTemperatures = new LinkedList<>();
+        for (double temperature : temperatures) {
+            double normalizedTemperature = normalizeTemperature(temperature);
+            normalizedTemperatures.add(normalizedTemperature);
+        }
+        temperatures = normalizedTemperatures;
+    }
+
     private void setMinimums(){
         for(List<Double> chemicalRepresentation : chemicalRepresentations){
             for (int i = 0; i < chemicalRepresentation.size(); i++) {
-                if(minimums.size() <= i)
-                    minimums.add(chemicalRepresentation.get(i));
-                else if (minimums.get(i) > chemicalRepresentation.get(i))
-                    minimums.set(i, chemicalRepresentation.get(i));
+                if(chemicalRepresentationMinimums.size() <= i)
+                    chemicalRepresentationMinimums.add(chemicalRepresentation.get(i));
+                else if (chemicalRepresentationMinimums.get(i) > chemicalRepresentation.get(i))
+                    chemicalRepresentationMinimums.set(i, chemicalRepresentation.get(i));
             }
         }
     }
@@ -53,10 +76,10 @@ class Trainer extends InputEvaluater {
     private void setMaximums(){
         for(List<Double> chemicalRepresentation : chemicalRepresentations){
             for (int i = 0; i < chemicalRepresentation.size(); i++) {
-                if(maximums.size() <= i)
-                    maximums.add(chemicalRepresentation.get(i));
-                else if(maximums.get(i) < chemicalRepresentation.get(i))
-                    maximums.set(i, chemicalRepresentation.get(i));
+                if(chemicalRepresentationMaximums.size() <= i)
+                    chemicalRepresentationMaximums.add(chemicalRepresentation.get(i));
+                else if(chemicalRepresentationMaximums.get(i) < chemicalRepresentation.get(i))
+                    chemicalRepresentationMaximums.set(i, chemicalRepresentation.get(i));
             }
         }
     }
@@ -65,9 +88,13 @@ class Trainer extends InputEvaluater {
         chemicalRepresentations.add(inputParser.getNextChemicalRepresentation());
     }
 
+    private void readOneTemperature(){
+        temperatures.add(inputParser.getNextTemperature());
+    }
+
     private void trainOnce(){
         setInputs();
-        double targetOutput = inputParser.getNextTemperature();
+        double targetOutput = temperatures.remove();
 
         neuralNetworkToTrain.doBackPropagation(targetOutput);
     }
