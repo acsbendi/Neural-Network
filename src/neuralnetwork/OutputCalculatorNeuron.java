@@ -3,24 +3,24 @@ package neuralnetwork;
 import java.util.HashMap;
 import java.util.Map;
 
-abstract class OutputCalculatorNeuron extends Neuron {
-    private Map<InputNeuron, Double> inputConnections = new HashMap<>();
-    private double bias = randomGenerator.nextDouble();
-    private double currentOutput;
+abstract class OutputCalculatorNeuron<InputNeuronType extends Neuron> extends Neuron {
+    Map<InputNeuronType, Double> inputConnections = new HashMap<>();
+    double bias = randomGenerator.nextDouble();
 
-    void addInputConnection(InputNeuron inputNeuron){
+    void addInputConnection(InputNeuronType inputNeuron){
         inputConnections.put(inputNeuron, randomGenerator.nextDouble());
     }
 
     void calculateCurrentOutput(){
         double currentNet = getNet();
-        currentOutput = applyOutputFunction(currentNet);
+        double newOutput = applyOutputFunction(currentNet);
+        setCurrentOutput(newOutput);
     }
 
     private double getNet(){
         double net = 0;
-        for(Map.Entry<InputNeuron, Double> inputConnection : inputConnections.entrySet()){
-            net += inputConnection.getKey().getCurrentValue() * inputConnection.getValue();
+        for(Map.Entry<InputNeuronType, Double> inputConnection : inputConnections.entrySet()){
+            net += inputConnection.getKey().getCurrentOutput() * inputConnection.getValue();
         }
         net += bias;
 
