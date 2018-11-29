@@ -13,14 +13,13 @@ abstract class OutputCalculatorNeuron<InputNeuronType extends Neuron> extends Ne
 
     void calculateCurrentOutput(){
         double currentNet = getNet();
-        double newOutput = applyOutputFunction(currentNet);
-        setCurrentOutput(newOutput);
+        currentOutput = applyOutputFunction(currentNet);
     }
 
     private double getNet(){
         double net = 0;
         for(Map.Entry<InputNeuronType, Double> inputConnection : inputConnections.entrySet()){
-            net += inputConnection.getKey().getCurrentOutput() * inputConnection.getValue();
+            net += inputConnection.getKey().currentOutput * inputConnection.getValue();
         }
         net += bias;
 
@@ -30,4 +29,13 @@ abstract class OutputCalculatorNeuron<InputNeuronType extends Neuron> extends Ne
     private double applyOutputFunction(double net){
         return 1/(1 + Math.exp(-net));
     }
+
+    void updateWeightsAndBias(){
+        updateWeights();
+        updateBias();
+    }
+
+    protected abstract void updateWeights();
+
+    protected abstract void updateBias();
 }

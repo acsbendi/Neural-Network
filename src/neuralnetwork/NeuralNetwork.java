@@ -16,7 +16,7 @@ public class NeuralNetwork {
 
     public void setInputs(List<Double> chemicalRepresentations){
         for (int i = 0; i < inputNeurons.size(); i++) {
-            inputNeurons.get(i).setCurrentOutput(chemicalRepresentations.get(i));
+            inputNeurons.get(i).currentOutput = chemicalRepresentations.get(i);
         }
     }
 
@@ -31,6 +31,7 @@ public class NeuralNetwork {
     public void doBackPropagation(double target){
         double output = calculateOutput();
 
-        outputNeuron.updateWeights(target);
+        outputNeuron.setLastTarget(target);
+        outputNeuron.updateWeights();
     }
 }
