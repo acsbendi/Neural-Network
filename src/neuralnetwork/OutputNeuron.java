@@ -5,12 +5,17 @@ import java.util.Map;
 
 class OutputNeuron extends OutputCalculatorNeuron<HiddenNeuron> {
 
+    private final double INITIAL_WEIGHT_DIVISOR = 25;
     private double lastTarget = 0;
     private final Map<HiddenNeuron, Double> previousWeights = new HashMap<>();
 
+    OutputNeuron(){
+        bias /= INITIAL_WEIGHT_DIVISOR;
+    }
+
     @Override
     void addInputConnection(HiddenNeuron inputNeuron){
-        super.addInputConnection(inputNeuron);
+        inputConnections.put(inputNeuron, getRandomNumber()/ INITIAL_WEIGHT_DIVISOR);
         previousWeights.put(inputNeuron, 0d);
     }
 

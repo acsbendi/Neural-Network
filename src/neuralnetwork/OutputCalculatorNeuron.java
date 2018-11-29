@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 abstract class OutputCalculatorNeuron<InputNeuronType extends Neuron> extends Neuron {
-    private final Map<InputNeuronType, Double> inputConnections = new HashMap<>();
-    private double bias = getRandomNumber();
+     final Map<InputNeuronType, Double> inputConnections = new HashMap<>();
+     double bias = getRandomNumber();
 
     void addInputConnection(InputNeuronType inputNeuron){
         inputConnections.put(inputNeuron, getRandomNumber());

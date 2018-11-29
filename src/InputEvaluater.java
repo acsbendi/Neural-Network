@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("SpellCheckingInspection")
 class InputEvaluater {
     static final List<Double> chemicalRepresentationMinimums = new ArrayList<>();
     static final List<Double> chemicalRepresentationMaximums = new ArrayList<>();
@@ -19,5 +20,10 @@ class InputEvaluater {
 
     double normalizeTemperature(double original){
         return (original - temperatureMinimum)/(temperatureMaximum - temperatureMinimum);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    double denormalizeTemperature(double normalized){
+        return normalized*(temperatureMaximum - temperatureMinimum) + temperatureMinimum;
     }
 }

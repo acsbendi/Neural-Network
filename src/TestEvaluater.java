@@ -27,7 +27,7 @@ class TestEvaluater extends InputEvaluater{
 
         neuralNetwork.setInputs(chemicalRepresentation);
 
-        double result = neuralNetwork.calculateOutput();
+        double result = denormalizeTemperature(neuralNetwork.calculateOutput());
         System.out.println(String.valueOf(result));
     }
 }

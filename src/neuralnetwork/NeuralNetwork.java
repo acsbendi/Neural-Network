@@ -32,13 +32,7 @@ public class NeuralNetwork {
         calculateOutput();
 
         outputNeuron.setLastTarget(target);
-        /*System.out.println("Current output " + outputNeuron.currentOutput);
-        System.out.println("Delta: " + outputNeuron.getDelta());
-        System.out.println("Weights before " + outputNeuron.inputConnections.values().toString());
-        System.out.println("bias before " + outputNeuron.bias);*/
         outputNeuron.updateWeightsAndBias();
-       /* System.out.println("Weights after " + outputNeuron.inputConnections.values().toString());
-        System.out.println("bias after " + outputNeuron.bias);*/
 
         for(HiddenNeuron hiddenNeuron : hiddenNeurons)
             hiddenNeuron.updateWeightsAndBias();
