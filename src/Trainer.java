@@ -10,7 +10,7 @@ class Trainer {
     private final NeuralNetwork neuralNetworkToTrain;
     private final InputParser inputParser;
 
-    private Queue<List<Double>> chemicalRepresentations = new LinkedList<>();
+    private final Queue<List<Double>> chemicalRepresentations = new LinkedList<>();
 
     Trainer(NeuralNetwork neuralNetworkToTrain, InputParser inputParser) {
         this.neuralNetworkToTrain = neuralNetworkToTrain;

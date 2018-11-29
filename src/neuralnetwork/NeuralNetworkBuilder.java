@@ -7,9 +7,9 @@ public class NeuralNetworkBuilder {
 
     private final int NEURON_COUNT = 81;
 
-    private List<InputNeuron> inputNeurons = new ArrayList<>();
-    private List<HiddenNeuron> hiddenNeurons = new ArrayList<>();
-    private OutputNeuron outputNeuron = new OutputNeuron();
+    private final List<InputNeuron> inputNeurons = new ArrayList<>();
+    private final List<HiddenNeuron> hiddenNeurons = new ArrayList<>();
+    private final OutputNeuron outputNeuron = new OutputNeuron();
 
     private void createNeurons(){
         for(int i = 0; i < NEURON_COUNT; ++i){
@@ -22,6 +22,7 @@ public class NeuralNetworkBuilder {
         for(int i = 0; i < NEURON_COUNT; ++i){
             hiddenNeurons.get(i).addInputConnection(inputNeurons.get(i));
             outputNeuron.addInputConnection(hiddenNeurons.get(i));
+            hiddenNeurons.get(i).setOutputNeuron(outputNeuron);
         }
     }
 

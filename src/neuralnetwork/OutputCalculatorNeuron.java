@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 abstract class OutputCalculatorNeuron<InputNeuronType extends Neuron> extends Neuron {
-    private Map<InputNeuronType, Double> inputConnections = new HashMap<>();
+    private final Map<InputNeuronType, Double> inputConnections = new HashMap<>();
     private double bias = randomGenerator.nextDouble();
 
     void addInputConnection(InputNeuronType inputNeuron){
@@ -35,7 +35,7 @@ abstract class OutputCalculatorNeuron<InputNeuronType extends Neuron> extends Ne
         updateBias();
     }
 
-    void updateWeights() {
+    private void updateWeights() {
         for(Map.Entry<InputNeuronType, Double> inputConnection : inputConnections.entrySet()){
             double weightGradient = getErrorWeightGradientFor(inputConnection.getKey());
             double currentWeight = inputConnection.getValue();
@@ -46,7 +46,7 @@ abstract class OutputCalculatorNeuron<InputNeuronType extends Neuron> extends Ne
         }
     }
 
-    protected void onWeightUpdated(InputNeuronType inputNeuron, double oldWeight){
+    void onWeightUpdated(InputNeuronType inputNeuron, double oldWeight){
 
     }
 

@@ -6,7 +6,7 @@ import java.util.Map;
 class OutputNeuron extends OutputCalculatorNeuron<HiddenNeuron> {
 
     private double lastTarget = 0;
-    private Map<HiddenNeuron, Double> previousWeights = new HashMap<>();
+    private final Map<HiddenNeuron, Double> previousWeights = new HashMap<>();
 
     @Override
     void addInputConnection(HiddenNeuron inputNeuron){

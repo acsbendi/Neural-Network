@@ -20,7 +20,7 @@ public class NeuralNetwork {
         }
     }
 
-    private double calculateOutput(){
+    public double calculateOutput(){
         for(HiddenNeuron hiddenNeuron : hiddenNeurons){
             hiddenNeuron.calculateCurrentOutput();
         }
@@ -29,9 +29,12 @@ public class NeuralNetwork {
     }
 
     public void doBackPropagation(double target){
-        double output = calculateOutput();
+        calculateOutput();
 
         outputNeuron.setLastTarget(target);
-        outputNeuron.updateWeights();
+        outputNeuron.updateWeightsAndBias();
+
+        for(HiddenNeuron hiddenNeuron : hiddenNeurons)
+            hiddenNeuron.updateWeightsAndBias();
     }
 }
