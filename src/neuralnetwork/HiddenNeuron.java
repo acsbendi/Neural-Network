@@ -1,21 +1,21 @@
 package neuralnetwork;
 
-import java.util.Map;
-
 class HiddenNeuron extends OutputCalculatorNeuron<InputNeuron>{
 
     private OutputNeuron outputNeuron;
 
     @Override
-    protected void updateWeights() {
-        for(Map.Entry<InputNeuron, Double> inputConnection : inputConnections.entrySet()){
-
-        }
+    protected double getErrorWeightGradientFor(InputNeuron inputNeuron){
+        return outputNeuron.getErrorOutputGradientFor(this) * getOutputNetGradient() * getNetWeightGradientFor(inputNeuron);
     }
 
     @Override
-    protected void updateBias() {
+    protected double getErrorBiasGradient() {
+        return outputNeuron.getDelta();
+    }
 
+    private double getNetWeightGradientFor(InputNeuron inputNeuron){
+        return inputNeuron.currentOutput;
     }
 
     public void setOutputNeuron(OutputNeuron outputNeuron) {

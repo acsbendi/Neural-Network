@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 abstract class OutputCalculatorNeuron<InputNeuronType extends Neuron> extends Neuron {
-    Map<InputNeuronType, Double> inputConnections = new HashMap<>();
-    double bias = randomGenerator.nextDouble();
+    private Map<InputNeuronType, Double> inputConnections = new HashMap<>();
+    private double bias = randomGenerator.nextDouble();
 
     void addInputConnection(InputNeuronType inputNeuron){
         inputConnections.put(inputNeuron, randomGenerator.nextDouble());
@@ -35,7 +35,31 @@ abstract class OutputCalculatorNeuron<InputNeuronType extends Neuron> extends Ne
         updateBias();
     }
 
-    protected abstract void updateWeights();
+    void updateWeights() {
+        for(Map.Entry<InputNeuronType, Double> inputConnection : inputConnections.entrySet()){
+            double weightGradient = getErrorWeightGradientFor(inputConnection.getKey());
+            double currentWeight = inputConnection.getValue();
+            double newWeight = currentWeight - LEARNING_RATE * weightGradient;
+            onWeightUpdated(inputConnection.getKey(), currentWeight);
 
-    protected abstract void updateBias();
+            inputConnection.setValue(newWeight);
+        }
+    }
+
+    protected void onWeightUpdated(InputNeuronType inputNeuron, double oldWeight){
+
+    }
+
+    protected abstract double getErrorWeightGradientFor(InputNeuronType inputNeuron);
+
+    private void updateBias(){
+        double biasGradient = getErrorBiasGradient();
+        bias -= LEARNING_RATE * biasGradient;
+    }
+
+    protected abstract double getErrorBiasGradient();
+
+    double getOutputNetGradient(){
+        return currentOutput * (1 - currentOutput);
+    }
 }

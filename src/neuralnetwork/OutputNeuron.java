@@ -24,23 +24,21 @@ class OutputNeuron extends OutputCalculatorNeuron<HiddenNeuron> {
         return -(target - currentOutput);
     }
 
-    private double getOutputNetGradient(){
-        return currentOutput * (1 - currentOutput);
-    }
-
     private double getNetWeightGradientFor(HiddenNeuron hiddenNeuron){
         return hiddenNeuron.currentOutput;
     }
 
-    private double getErrorWeightGradient(HiddenNeuron hiddenNeuron){
+    @Override
+    protected double getErrorWeightGradientFor(HiddenNeuron hiddenNeuron){
         return getErrorOutputGradient(lastTarget) * getOutputNetGradient() * getNetWeightGradientFor(hiddenNeuron);
     }
 
-    private double getDelta(){
+    double getDelta(){
         return getErrorOutputGradient(lastTarget) * getOutputNetGradient();
     }
 
-    private double getErrorBiasGradient(){
+    @Override
+    protected double getErrorBiasGradient(){
         return getDelta();
     }
 
@@ -48,27 +46,9 @@ class OutputNeuron extends OutputCalculatorNeuron<HiddenNeuron> {
         lastTarget = target;
     }
 
-    void updateWeightsAndBias(){
-        updateWeights();
-        updateBias();
-    }
-
     @Override
-    protected void updateWeights(){
-        for(Map.Entry<HiddenNeuron, Double> inputConnection : inputConnections.entrySet()){
-            double weightGradient = getErrorWeightGradient(inputConnection.getKey());
-            double currentWeight = inputConnection.getValue();
-            double newWeight = currentWeight - LEARNING_RATE * weightGradient;
-            previousWeights.replace(inputConnection.getKey(), currentWeight);
-
-            inputConnection.setValue(newWeight);
-        }
-    }
-
-    @Override
-    protected void updateBias(){
-        double biasGradient = getErrorBiasGradient();
-        bias -= LEARNING_RATE * biasGradient;
+    protected void onWeightUpdated(HiddenNeuron inputNeuron, double oldWeight) {
+        previousWeights.replace(inputNeuron, oldWeight);
     }
 
     double getErrorOutputGradientFor(HiddenNeuron hiddenNeuron){
